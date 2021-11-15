@@ -17,11 +17,11 @@ namespace PokedexService.AcceptanceTests.Features
     [TestFixture]
     public class SearchPokemonFixture
     {
-        private HttpClient apiClient;
-        
+        private HttpClient _apiClient;
+
         private string _pokemon;
         private HttpResponseMessage _httpResponseMessage;
-        
+
         [SetUp]
         public void Setup()
         {
@@ -29,7 +29,7 @@ namespace PokedexService.AcceptanceTests.Features
                 .AddJsonFile("appsettings.test.json")
                 .Build();
 
-            apiClient = new HttpClient()
+            _apiClient = new HttpClient()
             {
                 BaseAddress = new Uri(builder["Service:BaseUrl"])
             };
@@ -38,8 +38,8 @@ namespace PokedexService.AcceptanceTests.Features
         [Test]
         public void Search_pokemon()
         {
-            this.When(_ => _.IAmLookingFor("mewTwo"))
-                .Then(_ => _.ISearchPokemon())
+            this.Given(_ => _.IAmLookingFor("mewtwo"))
+                .When(_ => _.ISearchPokemon())
                 .Then(_ => _.AHttpStatusCodeIsReturned(HttpStatusCode.OK))
                 .And(_ => _.APokemonIsReturned())
                 .BDDfy();
@@ -54,7 +54,7 @@ namespace PokedexService.AcceptanceTests.Features
         [When]
         private async Task ISearchPokemon()
         {
-            _httpResponseMessage = await apiClient.GetAsync($"pokemon/{_pokemon}");
+            _httpResponseMessage = await _apiClient.GetAsync($"pokemon/{_pokemon}");
         }
 
         [Then]
