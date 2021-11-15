@@ -26,5 +26,14 @@ namespace PokedexService.InMemoryTests.Stubs
                 r.Content = new StringContent(JsonConvert.SerializeObject(searchResponse, SerialiserSettings.SnakeCase));
             });
         }
+        
+        public void QueueNotFoundResponse()
+        {
+            _fakeHttpClient.QueueNextResponse(r =>
+            {
+                r.StatusCode = HttpStatusCode.NotFound;
+                r.Content = new StringContent(string.Empty);
+            });
+        }
     }
 }

@@ -30,6 +30,25 @@ namespace PokedexService.InMemoryTests.Fixtures
                 .BDDfy();
         }
 
+        [Test]
+        public void Search_unknown_pokemon_returns_not_found()
+        {
+            this.Given(_ => APokemonDoesNotExist())
+                .When(_ => _.ISearchPokemon())
+                .Then(_ => _.AHttpStatusCodeIsReturned(HttpStatusCode.NotFound))
+                .And(_ => _.APokemonIsNotReturned())
+                .BDDfy();
+        }
+        
+        [TestCase("12345678")]
+        [TestCase(@"!*()%")]
+        public void pokemon_name_with_non_letter_returns_bad_request(string invalidName)
+        {
+            this.When(_ => _.ISearchPokemon(invalidName))
+                .Then(_ => _.AHttpStatusCodeIsReturned(HttpStatusCode.BadRequest))
+                .BDDfy();
+        }
+        
         [Given]
         private void APokemonExists()
         {
@@ -50,6 +69,18 @@ namespace PokedexService.InMemoryTests.Fixtures
             _pokeApiHttpClientStub.QueueNextResponse(_pokeApiSearchResponse);
         }
 
+        [Given]
+        private void APokemonDoesNotExist()
+        {
+            _pokeApiHttpClientStub.QueueNotFoundResponse();
+        }
+        
+        [When]
+        private async Task ISearchPokemon(string name)
+        {
+            _httpResponseMessage = await ApiClient.GetAsync($"pokemon/{name}");
+        }
+        
         [When]
         private async Task ISearchPokemon()
         {
@@ -69,6 +100,14 @@ namespace PokedexService.InMemoryTests.Fixtures
             searchResult.Description.Should().Be(_pokeApiSearchResponse.FlavorTextEntries.First().FlavorText);
         }
 
+        [Then]
+        private async Task APokemonIsNotReturned()
+        {
+            var responseBody = await _httpResponseMessage.Content.ReadAsStringAsync();
+
+            responseBody.Should().Match("* is not a Pokemon\"");
+        }
+        
         [Then]
         private void AHttpStatusCodeIsReturned(HttpStatusCode httpStatusCode)
         {

@@ -82,6 +82,17 @@ namespace PokedexService.UnitTests
         }
 
         [Test]
+        public void Search_pokemon_not_found()
+        {
+            _fakeHttpClient.QueueNextResponse(r =>
+            {
+                r.StatusCode = HttpStatusCode.NotFound;
+            });
+
+            Assert.ThrowsAsync<PokemonNotFoundException>(() => _pokeApiHttpClient.SearchBySpeciesAsync("mewThree"));
+        }
+        
+        [Test]
         public void Search_pokemon_unsuccessful()
         {
             _fakeHttpClient.QueueNextResponse(r =>

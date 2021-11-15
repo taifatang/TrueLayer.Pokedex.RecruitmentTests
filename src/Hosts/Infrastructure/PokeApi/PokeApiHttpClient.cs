@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Hosts.Domain.Exceptions;
 using Hosts.Domain.PokeApi;
@@ -8,10 +9,11 @@ using Newtonsoft.Json;
 
 namespace Hosts.Infrastructure.PokeApi
 {
-    public class PokeApiHttpClient: IPokeApiHttpClient
+    public class PokeApiHttpClient : IPokeApiHttpClient
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<PokeApiHttpClient> _logger;
+
         public PokeApiHttpClient(HttpClient httpClient, ILogger<PokeApiHttpClient> logger)
         {
             _httpClient = httpClient;
@@ -23,21 +25,19 @@ namespace Hosts.Infrastructure.PokeApi
             var response = await _httpClient.GetAsync($"/api/v2/pokemon-species/{pokemon}");
             var content = await response.Content.ReadAsStringAsync();
 
-            if (!response.IsSuccessStatusCode)
+            if (response.StatusCode == HttpStatusCode.NotFound)
+            {
+                throw new PokemonNotFoundException(pokemon);
+            }
+
+            if (!response.IsSuccessStatusCode || string.IsNullOrEmpty(content))
             {
                 _logger.LogWarning("Received unexpected response from Poke Api {statusCode} {content}", response.StatusCode, content);
 
                 throw new UnexpectedResponseException(nameof(PokeApiHttpClient));
             }
 
-            if (!string.IsNullOrEmpty(content))
-            {
-                return JsonConvert.DeserializeObject<PokeApiSearchResponse>(content, SerialiserSettings.SnakeCase);
-            }
-
-            _logger.LogWarning("Received successful response from Poke Api {statusCode} but unexpected empty content", response.StatusCode);
-
-            throw new UnexpectedResponseException(nameof(PokeApiHttpClient));
+            return JsonConvert.DeserializeObject<PokeApiSearchResponse>(content, SerialiserSettings.SnakeCase);
         }
     }
 }
