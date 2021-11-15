@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hosts", "src\Hosts\Hosts.cs
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokedexService.UnitTests", "tests\PokedexService.UnitTests\PokedexService.UnitTests.csproj", "{8A05BE02-50E3-466D-88F6-D3981E8BED79}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokedexService.AcceptanceTests", "tests\PokedexService.AcceptanceTests\PokedexService.AcceptanceTests.csproj", "{C99DD637-3F42-4ABE-915F-5C4A31FB71AD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PokedexService.AcceptanceHelper", "tests\PokedexService.AcceptanceHelper\PokedexService.AcceptanceHelper.csproj", "{31A97F8C-3BC0-4FFE-9A23-010DB5142934}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -25,6 +29,14 @@ Global
 		{8A05BE02-50E3-466D-88F6-D3981E8BED79}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A05BE02-50E3-466D-88F6-D3981E8BED79}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A05BE02-50E3-466D-88F6-D3981E8BED79}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C99DD637-3F42-4ABE-915F-5C4A31FB71AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C99DD637-3F42-4ABE-915F-5C4A31FB71AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C99DD637-3F42-4ABE-915F-5C4A31FB71AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C99DD637-3F42-4ABE-915F-5C4A31FB71AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31A97F8C-3BC0-4FFE-9A23-010DB5142934}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31A97F8C-3BC0-4FFE-9A23-010DB5142934}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31A97F8C-3BC0-4FFE-9A23-010DB5142934}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31A97F8C-3BC0-4FFE-9A23-010DB5142934}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +44,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{4F6E9DB8-1CE5-47BE-86DA-260544850191} = {A6321EB2-2887-4E4C-8875-FDD71715A7B8}
 		{8A05BE02-50E3-466D-88F6-D3981E8BED79} = {57DE68E8-0C9F-44F3-BFFB-2DA3EF351250}
+		{C99DD637-3F42-4ABE-915F-5C4A31FB71AD} = {57DE68E8-0C9F-44F3-BFFB-2DA3EF351250}
+		{31A97F8C-3BC0-4FFE-9A23-010DB5142934} = {57DE68E8-0C9F-44F3-BFFB-2DA3EF351250}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8EE29E1B-A153-473C-A4EA-95E1B769DA6B}
