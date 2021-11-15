@@ -45,6 +45,16 @@ namespace PokedexService.AcceptanceTests.Features
                 .BDDfy();
         }
 
+        [Test]
+        public void Search_translated_pokemon()
+        {
+            this.Given(_ => _.IAmLookingFor("zubat"))
+                .When(_ => _.ISearchPokemonWithTranslation())
+                .Then(_ => _.AHttpStatusCodeIsReturned(HttpStatusCode.OK))
+                .And(_ => _.APokemonIsReturned())
+                .BDDfy();
+        }
+
         [Given]
         private void IAmLookingFor(string pokemon)
         {
@@ -55,6 +65,12 @@ namespace PokedexService.AcceptanceTests.Features
         private async Task ISearchPokemon()
         {
             _httpResponseMessage = await _apiClient.GetAsync($"pokemon/{_pokemon}");
+        }
+
+        [When]
+        private async Task ISearchPokemonWithTranslation()
+        {
+            _httpResponseMessage = await _apiClient.GetAsync($"pokemon/translated/{_pokemon}");
         }
 
         [Then]
