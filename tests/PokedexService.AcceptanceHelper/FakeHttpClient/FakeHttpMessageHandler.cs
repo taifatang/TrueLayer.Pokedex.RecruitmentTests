@@ -9,20 +9,16 @@ namespace PokedexService.AcceptanceHelper.FakeHttpClient
     public class FakeHttpMessageHandler : HttpMessageHandler
     {
         public Queue<HttpRequestMessage> Requests { get; }
-        public Queue<HttpResponseMessage> Responses { get; }
+        private Queue<Action<Uri, HttpResponseMessage>> Responses { get; }
 
         public FakeHttpMessageHandler()
         {
             Requests = new Queue<HttpRequestMessage>();
-            Responses = new Queue<HttpResponseMessage>();
+            Responses = new Queue<Action<Uri, HttpResponseMessage>>();
         }
 
-        public void QueueNextResponse(Action<HttpResponseMessage> customisations)
+        public void QueueNextResponse(Action<Uri, HttpResponseMessage> response)
         {
-            var response = new HttpResponseMessage();
-
-            customisations(response);
-
             Responses.Enqueue(response);
         }
 
@@ -30,7 +26,13 @@ namespace PokedexService.AcceptanceHelper.FakeHttpClient
         {
             Requests.Enqueue(request);
 
-            return Task.FromResult(Responses.Dequeue());
+            var response = new HttpResponseMessage();
+
+            var customisations = Responses.Dequeue();
+
+            customisations(request.RequestUri, response);
+
+            return Task.FromResult(response);
         }
     }
 }

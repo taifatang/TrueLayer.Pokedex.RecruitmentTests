@@ -9,13 +9,13 @@ using NUnit.Framework;
 using PokedexService.AcceptanceHelper.Contracts;
 using TestStack.BDDfy;
 
-namespace PokedexService.InMemoryTests.Fixtures
+namespace PokedexService.InMemoryTests.Features
 {
     [Story(AsA = "pokemon enthusiast",
         IWant = "search for pokemon",
         SoThat = "I can understand the pokemon more")]
     [TestFixture]
-    public class SearchPokemonFixture : AcceptanceTestBase
+    public class SearchPokemonFeature : AcceptanceTestBase
     {
         private HttpResponseMessage _httpResponseMessage;
         private PokeApiSearchResponse _pokeApiSearchResponse;
@@ -68,13 +68,13 @@ namespace PokedexService.InMemoryTests.Fixtures
                 }
             };
 
-            _pokeApiHttpClientStub.QueueNextResponse(_pokeApiSearchResponse);
+            Stubs.PokeApiHttpClientStub.QueueNextResponse(_pokeApiSearchResponse);
         }
 
         [Given]
         private void ThePokemonDoesNotExist()
         {
-            _pokeApiHttpClientStub.QueueNotFoundResponse();
+            Stubs.PokeApiHttpClientStub.QueueNotFoundResponse();
         }
 
         [When]

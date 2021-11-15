@@ -13,9 +13,14 @@ namespace PokedexService.AcceptanceHelper.FakeHttpClient
             _fakeHttpMessageHandler = fakeHttpMessageHandler;
         }
 
-        public void QueueNextResponse(Action<HttpResponseMessage> action)
+        public void QueueNextResponse(Action<Uri, HttpResponseMessage> action)
         {
             _fakeHttpMessageHandler.QueueNextResponse(action);
+        }
+
+        public void QueueNextResponse(Action<HttpResponseMessage> action)
+        {
+            _fakeHttpMessageHandler.QueueNextResponse((_, message) => action(message));
         }
     }
 }

@@ -13,9 +13,12 @@ namespace Hosts.Controllers
     public class PokemonController : ControllerBase
     {
         private readonly PokemonService _pokemonService;
-        public PokemonController(PokemonService pokemonService)
+        private readonly TranslationService _translationService;
+
+        public PokemonController(PokemonService pokemonService, TranslationService translationService)
         {
             _pokemonService = pokemonService;
+            this._translationService = translationService;
         }
 
         [HttpGet("{name}")]
@@ -39,5 +42,28 @@ namespace Hosts.Controllers
                 return NotFound(ex.Message);
             }
         }
+
+        [HttpGet("translated/{name}")]
+        [Produces("application/json")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PokemonSearchResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> SearchWithTranslation(
+            [RegularExpression(@"^[a-zA-Z]+$", ErrorMessage = "Name can contain letters only")]string name)
+        {
+            try
+            {
+                var pokemon = await _pokemonService.SearchAsync(name);
+
+                pokemon.Description = await _translationService.Translate(pokemon.Description, pokemon.Translation);;
+
+                return Ok(new PokemonSearchResponse(pokemon));
+            }
+            catch (PokemonNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
     }
 }

@@ -11,7 +11,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using PokedexService.AcceptanceHelper.FakeHttpClient;
 
-namespace PokedexService.UnitTests
+namespace PokedexService.UnitTests.Infrastructure
 {
     [TestFixture]
     public class PokeApiHttpClientTests
@@ -91,7 +91,7 @@ namespace PokedexService.UnitTests
 
             Assert.ThrowsAsync<PokemonNotFoundException>(() => _pokeApiHttpClient.SearchBySpeciesAsync("mewThree"));
         }
-        
+
         [Test]
         public void Search_pokemon_unsuccessful()
         {

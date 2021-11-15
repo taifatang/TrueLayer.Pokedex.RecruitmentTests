@@ -1,5 +1,4 @@
 ﻿using System.Net.Http;
-using Hosts.Domain.PokeApi;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using PokedexService.InMemoryTests.Stubs;
@@ -9,16 +8,16 @@ namespace PokedexService.InMemoryTests
     public abstract class AcceptanceTestBase
     {
         protected HttpClient ApiClient;
-        protected PokeApiHttpClientStub _pokeApiHttpClientStub;
+        protected StubsModule  Stubs;
 
         private CustomWebApplicationFactory _factory;
-        
+
         [SetUp]
         public void SetUp()
         {
             _factory = new CustomWebApplicationFactory();
             ApiClient = _factory.CreateClient();
-            _pokeApiHttpClientStub = _factory.Services.GetRequiredService<IPokeApiHttpClient>() as PokeApiHttpClientStub;
+            Stubs = _factory.Services.GetRequiredService<StubsModule>();
         }
 
         [TearDown]

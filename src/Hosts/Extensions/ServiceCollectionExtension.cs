@@ -1,5 +1,7 @@
-﻿using Hosts.Domain.PokeApi;
+﻿using Hosts.Domain.FunTranslations;
+using Hosts.Domain.PokeApi;
 using Hosts.Infrastructure;
+using Hosts.Infrastructure.FunTranslations;
 using Hosts.Infrastructure.PokeApi;
 using Hosts.Settings;
 using Microsoft.Extensions.Configuration;
@@ -13,6 +15,7 @@ namespace Hosts.Extensions
         public static IServiceCollection RegisterConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<PokeApiSettings>(configuration.GetSection(PokeApiSettings.Position));
+            services.Configure<FunTranslationSettings>(configuration.GetSection(FunTranslationSettings.Position));
 
             return services;
         }
@@ -24,12 +27,18 @@ namespace Hosts.Extensions
                 client.BaseAddress = provider.GetRequiredService<IOptions<PokeApiSettings>>().Value.BaseUrl;
             });
 
+            services.AddHttpClient<IFunTranslationsHttpClient, FunTranslationsHttpClient>((provider, client) =>
+            {
+                client.BaseAddress = provider.GetRequiredService<IOptions<FunTranslationSettings>>().Value.BaseUrl;
+            });
+
             return services;
         }
 
         public static IServiceCollection RegisterServices(this IServiceCollection services)
         {
             services.AddTransient<PokemonService>();
+            services.AddTransient<TranslationService>();
 
             return services;
         }

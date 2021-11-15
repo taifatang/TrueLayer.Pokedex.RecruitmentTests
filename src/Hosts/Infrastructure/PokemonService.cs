@@ -8,10 +8,12 @@ namespace Hosts.Infrastructure
     public class PokemonService
     {
         private readonly IPokeApiHttpClient _pokeApiHttpClient;
+        private readonly TranslationService _translationService;
 
-        public PokemonService(IPokeApiHttpClient pokeApiHttpClient)
+        public PokemonService(IPokeApiHttpClient pokeApiHttpClient, TranslationService translationService)
         {
             _pokeApiHttpClient = pokeApiHttpClient;
+            _translationService = translationService;
         }
 
         public async Task<Pokemon> SearchAsync(string name)
