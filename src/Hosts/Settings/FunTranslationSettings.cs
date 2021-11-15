@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Hosts.Settings
 {
@@ -7,6 +6,5 @@ namespace Hosts.Settings
     {
         public static string Position => "FunTranslation";
         public Uri BaseUrl { get; set; }
-        public IEnumerable<string> SupportedTranslation { get; set; }
     }
 }

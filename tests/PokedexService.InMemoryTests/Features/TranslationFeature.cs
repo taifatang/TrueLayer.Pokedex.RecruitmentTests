@@ -120,7 +120,7 @@ namespace PokedexService.InMemoryTests.Features
         [Given]
         private void ThePokemonLivesInACave()
         {
-            _pokeApiSearchResponse.Habitat.Name = "cave";
+            _pokeApiSearchResponse.Habitat.Name = "CaVe";
         }
 
         [Given]

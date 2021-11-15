@@ -64,6 +64,5 @@ namespace Hosts.Controllers
                 return NotFound(ex.Message);
             }
         }
-
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace Hosts.Domain.Models
+﻿using System;
+
+namespace Hosts.Domain.Models
 {
     public class Pokemon
     {
@@ -7,6 +9,9 @@
         public string Habitat { get; set; }
         public bool IsLegendary { get; set; }
 
-        public string Translation => IsLegendary || Habitat == "cave" ? "Yoda" : "Shakespeare";
+        public string Translation =>
+            IsLegendary || Habitat.Equals("cave", StringComparison.OrdinalIgnoreCase)
+            ? "Yoda"
+            : "Shakespeare";
     }
 }

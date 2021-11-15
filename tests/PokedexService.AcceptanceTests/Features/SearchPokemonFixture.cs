@@ -15,7 +15,7 @@ namespace PokedexService.AcceptanceTests.Features
         IWant = "search for pokemon",
         SoThat = "I can understand the pokemon more")]
     [TestFixture]
-    public class SearchPokemonFixture
+    public class SearchPokemonFeature
     {
         private HttpClient _apiClient;
 
