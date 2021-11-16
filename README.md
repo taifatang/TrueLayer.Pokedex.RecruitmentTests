@@ -27,6 +27,7 @@ The E2E tests suite expects the service to be hosted on the default .Net HTTPS B
 
 1. The layout of the project follows [Microsoft's Design a DDD-oriented microservice](https://docs.microsoft.com/en-us/dotnet/architecture/microservices/microservice-ddd-cqrs-patterns/ddd-oriented-microservice). I split them by folders to reduce cluttering in this exercise.
 2. I have added some inline comments.
+3. Added a very simple Github Action to build and tests
 
 ## Improvements
 
