@@ -21,17 +21,18 @@ namespace PokedexService.InMemoryTests.Features
         private HttpResponseMessage _httpResponseMessage;
         private PokeApiSearchResponse _pokeApiSearchResponse;
 
-        private static string _standardDescription = "I am the amazing Mew Two";
-        private static string _yodaDescription = "Yoda is here";
-        private static string _shakespeareDescription = "Then live, Macduff. What need I fear of thee?";
+        private const string StandardDescription = "I am the amazing Mew Two";
+        private const string YodaDescription = "Yoda is here";
+        private const string ShakespeareDescription = "Then live, Macduff. What need I fear of thee?";
 
         [Test]
-        public void Search_pokemon()
+        public void Search_standard_pokemon_returns()
         {
             this.Given(_ => ThePokemonExists())
+                .And(_ => TheTranslationServiceAvailable())
                 .When(_ => _.ISearchPokemonWithTranslation())
                 .Then(_ => _.AHttpStatusCodeIsReturned(HttpStatusCode.OK))
-                .And(_ => _.ThePokenmonDescriptionShouldBe(_standardDescription))
+                .And(_ => _.ThePokenmonDescriptionShouldBe(ShakespeareDescription))
                 .BDDfy();
         }
 
@@ -43,7 +44,7 @@ namespace PokedexService.InMemoryTests.Features
                 .And(_ => TheTranslationServiceAvailable())
                 .When(_ => _.ISearchPokemonWithTranslation())
                 .Then(_ => _.AHttpStatusCodeIsReturned(HttpStatusCode.OK))
-                .And(_ => _.ThePokenmonDescriptionShouldBe(_yodaDescription))
+                .And(_ => _.ThePokenmonDescriptionShouldBe(YodaDescription))
                 .BDDfy();
         }
 
@@ -55,18 +56,18 @@ namespace PokedexService.InMemoryTests.Features
                 .And(_ => TheTranslationServiceAvailable())
                 .When(_ => _.ISearchPokemonWithTranslation())
                 .Then(_ => _.AHttpStatusCodeIsReturned(HttpStatusCode.OK))
-                .And(_ => _.ThePokenmonDescriptionShouldBe(_yodaDescription))
+                .And(_ => _.ThePokenmonDescriptionShouldBe(YodaDescription))
                 .BDDfy();
         }
 
         [Test]
-        public void Search_translated_pokemon_falls_back_to_standard_description()
+        public void Search_pokemon_falls_back_to_standard_description_when_translation_is_unavailable()
         {
             this.Given(_ => ThePokemonExists())
                 .And(_ => _.TheTranslationServiceIsUnavailable())
                 .When(_ => _.ISearchPokemonWithTranslation())
                 .Then(_ => _.AHttpStatusCodeIsReturned(HttpStatusCode.OK))
-                .And(_ => _.ThePokenmonDescriptionShouldBe(_standardDescription))
+                .And(_ => _.ThePokenmonDescriptionShouldBe(StandardDescription))
                 .BDDfy();
         }
 
@@ -84,7 +85,7 @@ namespace PokedexService.InMemoryTests.Features
         [TestCase(@"!*()%")]
         [TestCase("mew2")]
         [TestCase("m$wTwo")]
-        public void Search_with_invalid_pokemon_name_containing_non_letters(string invalidName)
+        public void Search_with_invalid_pokemon_name_containing_non_letters_returns_bad_request(string invalidName)
         {
             this.When(_ => _.ISearchPokemonWithTranslation(invalidName))
                 .Then(_ => _.AHttpStatusCodeIsReturned(HttpStatusCode.BadRequest))
@@ -136,8 +137,8 @@ namespace PokedexService.InMemoryTests.Features
             //  The FakeHttpClient should be more sophisticated similar to richardszalay/mockhttp
             Stubs.FunTranslationsHttpClientStub.QueueNextResponse(new Dictionary<string, string>()
             {
-                { "/translate/Shakespeare", _shakespeareDescription },
-                { "/translate/Yoda", _yodaDescription },
+                { "/translate/Shakespeare", ShakespeareDescription },
+                { "/translate/Yoda", YodaDescription },
             });
         }
 

@@ -44,7 +44,7 @@ namespace PokedexService.InMemoryTests.Features
         [TestCase(@"!*()%")]
         [TestCase("mew2")]
         [TestCase("m$wTwo")]
-        public void Search_with_invalid_pokemon_name_containing_non_letters(string invalidName)
+        public void Search_with_invalid_pokemon_name_containing_non_letters_returns_bad_request(string invalidName)
         {
             this.When(_ => _.ISearchPokemon(invalidName))
                 .Then(_ => _.AHttpStatusCodeIsReturned(HttpStatusCode.BadRequest))

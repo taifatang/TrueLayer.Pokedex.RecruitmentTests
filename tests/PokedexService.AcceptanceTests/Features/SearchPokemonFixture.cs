@@ -19,7 +19,7 @@ namespace PokedexService.AcceptanceTests.Features
     {
         private HttpClient _apiClient;
 
-        private string _pokemon;
+        private string _name;
         private HttpResponseMessage _httpResponseMessage;
 
         [SetUp]
@@ -58,19 +58,19 @@ namespace PokedexService.AcceptanceTests.Features
         [Given]
         private void IAmLookingFor(string pokemon)
         {
-            _pokemon = pokemon;
+            _name = pokemon;
         }
 
         [When]
         private async Task ISearchPokemon()
         {
-            _httpResponseMessage = await _apiClient.GetAsync($"pokemon/{_pokemon}");
+            _httpResponseMessage = await _apiClient.GetAsync($"pokemon/{_name}");
         }
 
         [When]
         private async Task ISearchPokemonWithTranslation()
         {
-            _httpResponseMessage = await _apiClient.GetAsync($"pokemon/translated/{_pokemon}");
+            _httpResponseMessage = await _apiClient.GetAsync($"pokemon/translated/{_name}");
         }
 
         [Then]
@@ -80,7 +80,7 @@ namespace PokedexService.AcceptanceTests.Features
             var searchResult = JsonConvert.DeserializeObject<PokemonSearchResponse>(responseBody);
 
             searchResult.Should().NotBeNull();
-            searchResult.Name.Should().Be(_pokemon);
+            searchResult.Name.Should().Be(_name);
         }
 
         [Then]
